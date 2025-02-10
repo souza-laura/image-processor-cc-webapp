@@ -1,0 +1,26 @@
+openapi: 3.0.1
+info:
+  title: API di Upload Immagine
+  version: 1.0.0
+paths:
+  /image/upload:
+    post:
+      summary: Carica un'immagine e restituisce l'id dell'immagine caricata
+      operationId: uploadImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Id dell'immagine
+          content:
+            text/plain:
+              schema:
+                type: string
