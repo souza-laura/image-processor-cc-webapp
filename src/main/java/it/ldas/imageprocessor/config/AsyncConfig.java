@@ -22,7 +22,7 @@ public class AsyncConfig {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(maxConcurrentTasks); // max elab parallele
         executor.setMaxPoolSize(maxConcurrentTasks);  // max thread
-        executor.setQueueCapacity(500);               // capacità codA
+        executor.setQueueCapacity(10);               // capacità codA
         executor.initialize();
         return executor;
     }

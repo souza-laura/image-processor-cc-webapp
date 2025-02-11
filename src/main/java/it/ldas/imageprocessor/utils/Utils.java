@@ -14,43 +14,48 @@ public class Utils {
     }
 
     public static Map<String, Object> parseMetadata(String metadata) {
-        Map<String, Object> resultMap = new LinkedHashMap<>(); // linkedHashMap per mantenere l'ordine
-        Deque<Map<String, Object>> stack = new ArrayDeque<>(); // stack per gestire i livelli di annidamento
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        Deque<Map<String, Object>> stack = new ArrayDeque<>();
+        stack.push(resultMap);
 
         if (!ObjectUtils.isEmpty(metadata)) {
-            stack.push(resultMap); // Inizializza lo stack con la mappa principale
-
             String[] lines = metadata.split("\n");
             for (String line : lines) {
                 if (line.trim().isEmpty()) {
-                    continue; // Ignora righe vuote
+                    continue;
                 }
 
-                // Conta il numero di spazi all'inizio della riga per determinare il livello di annidamento
                 int indentLevel = line.length() - line.trim().length();
 
-                // Rimuovi le mappe inutili dallo stack in base al livello di annidamento
+                // Gestione corretta della struttura dello stack in base all'indentazione
                 while (stack.size() > indentLevel + 1) {
-                    stack.pop();
+                    stack.pop(); // Rimuove gli elementi dello stack che non corrispondono più al livello di indentazione
                 }
 
-                // Dividi la riga in chiave e valore
-                String[] parts = line.trim().split(":", 2);
-                String key = parts[0].trim();
-                String value = (parts.length > 1) ? parts[1].trim() : null;
+                // Assicurati che lo stack non sia vuoto prima di fare peek()
+                if (stack.peek() == null) {
+                    continue; // Salta la riga se non c'è una mappa nel livello attuale
+                }
 
-                // Se il valore è null, inizializza una nuova mappa per l'annidamento
-                if (value == null) {
+                String[] parts = line.trim().split(":", 2);
+                if (parts.length < 2) {
+                    continue; // Ignora righe non valide
+                }
+
+                String key = parts[0].trim();
+                String value = parts[1].trim();
+
+                stack.peek().put(key, value);
+
+                if (ObjectUtils.isEmpty(value)) {
                     Map<String, Object> nestedMap = new LinkedHashMap<>();
-                    stack.peek().put(key, nestedMap); // Aggiungi la nuova mappa alla mappa corrente
-                    stack.push(nestedMap); // Aggiungi la nuova mappa allo stack
-                } else {
-                    // Altrimenti, aggiungi la coppia chiave-valore alla mappa corrente
-                    stack.peek().put(key, value);
+                    stack.peek().put(key, nestedMap);
+                    stack.push(nestedMap); // Aggiungi la nuova mappa allo stack per livelli successivi
                 }
             }
         }
         return resultMap;
     }
+
 
 }
