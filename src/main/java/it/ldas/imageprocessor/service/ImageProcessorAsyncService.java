@@ -120,13 +120,13 @@ public class ImageProcessorAsyncService {
             String baseName = filePath.replace(extension, "");
 
             // trasformazione 50% dimensione
-            String resized50Path = baseName + "_resized50" + extension;
+            String resized50Path = baseName + "_50" + extension;
             ProcessBuilder resize50Builder = new ProcessBuilder("convert", filePath, "-resize", "50%", resized50Path);
             Process resize50Process = resize50Builder.start();
             resize50Process.waitFor();
 
             // b&w
-            String grayscalePath = baseName + "_grayscale" + extension;
+            String grayscalePath = baseName + "_bw" + extension;
             ProcessBuilder grayscaleBuilder = new ProcessBuilder("convert", filePath, "-colorspace", "gray", grayscalePath);
             Process grayscaleProcess = grayscaleBuilder.start();
             grayscaleProcess.waitFor();
