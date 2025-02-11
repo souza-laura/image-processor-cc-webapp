@@ -3,7 +3,7 @@ info:
   title: API di Upload Immagine
   version: 1.0.0
 paths:
-  /image/upload:
+  /images/upload:
     post:
       summary: Carica un'immagine e restituisce l'id dell'immagine caricata
       operationId: uploadImage
@@ -14,13 +14,28 @@ paths:
             schema:
               type: object
               properties:
-                file:
-                  type: string
-                  format: binary
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  maxItems: 5
       responses:
         "200":
-          description: Id dell'immagine
+          description: Id immagini
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: long
+                      description: ID del file salvato nel database
+                    nome:
+                      type: string
+                      description: Nome originale del file
+                    url:
+                      type: string
+                      description: URL pubblico del file salvato

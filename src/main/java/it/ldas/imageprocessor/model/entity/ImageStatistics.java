@@ -1,4 +1,4 @@
-package it.ldas.imageprocessor.dto.model;
+package it.ldas.imageprocessor.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
