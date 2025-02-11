@@ -12,4 +12,5 @@ public interface StatisticsRepository extends JpaRepository<ImageStatistics, Int
 
     @Query(value = "SELECT * FROM image_statistics_view", nativeQuery = true)
     ImageStatistics getImageStats();
+
 }
