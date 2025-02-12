@@ -63,7 +63,4 @@ public class ImageProcessingController {
         return ResponseEntity.ok(response);
     }
 
-
-
-
 }

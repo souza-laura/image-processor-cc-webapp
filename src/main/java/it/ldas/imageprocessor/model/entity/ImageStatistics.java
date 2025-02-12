@@ -28,5 +28,6 @@ public class ImageStatistics {
     private Integer receivedImages;
     private Integer processingImages;
     private Integer processedImages;
+    private Integer failedImages;
 
 }
