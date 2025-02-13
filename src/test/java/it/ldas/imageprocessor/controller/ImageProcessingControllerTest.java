@@ -10,7 +10,6 @@ import java.util.List;
 
 import it.ldas.imageprocessor.utils.enums.ElaborationState;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,6 @@ class ImageProcessingControllerTest {
      * Test {@link ImageProcessingController#uploadImage(List)}.
      */
     @Test
-    @DisplayName("test uploadImage - OK")
     void testUploadImage_OK() throws Exception {
         MockMultipartFile file = new MockMultipartFile("images", "file.png", "image/png",
                 "image content".getBytes());
@@ -70,7 +68,6 @@ class ImageProcessingControllerTest {
     }
 
     @Test
-    @DisplayName("test uploadImage - KO file != png/jpg")
     void testUploadImage_KO_FileType() throws Exception {
         MockMultipartFile file = new MockMultipartFile("images", "file.txt", "text/plain",
                 "invalid content".getBytes());
@@ -83,11 +80,8 @@ class ImageProcessingControllerTest {
                 .andExpect(status().reason("Tutti i file devono essere di tipo PNG o JPG."));
     }
 
-    /**
-     * Test {@link ImageProcessingController#getImageData(Long)}.
-     */
+
     @Test
-    @DisplayName("test getImageData - OK")
     void testGetImageData_OK() throws Exception {
         GetImageResponse mockResponse = new GetImageResponse("dummyName.png",12345L, null, ElaborationState.PROCESSED);
         when(imageProcessorService.retrieveImageData(1L)).thenReturn(mockResponse);
@@ -99,7 +93,6 @@ class ImageProcessingControllerTest {
     }
 
     @Test
-    @DisplayName("Test getImageData(Long) - KO not found")
     void testGetImageData_KO_NotFound() throws Exception {
         when(imageProcessorService.retrieveImageData(1L)).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -108,13 +101,9 @@ class ImageProcessingControllerTest {
         result.andExpect(status().isNotFound());
     }
 
-    /**
-     * Test {@link ImageProcessingController#getStats()}.
-     */
     @Test
-    @DisplayName("Test getStats() - OK")
     void testGetStats_OK() throws Exception {
-        StatsResponse mockResponse = new StatsResponse(10, BigDecimal.TEN, BigDecimal.TEN, 5, 0, 0, 5);
+        StatsResponse mockResponse = new StatsResponse(10, 10L, 10L, 5, 0, 0, 5);
         when(imageProcessorService.getStatistics()).thenReturn(mockResponse);
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/images/stats"));

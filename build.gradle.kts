@@ -20,9 +20,9 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4") // swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
 	implementation("org.mapstruct:mapstruct:1.6.3")
-	compileOnly("org.projectlombok:lombok:1.18.30") // persistence
+	compileOnly("org.projectlombok:lombok:1.18.30")
 	annotationProcessor("org.projectlombok:lombok:1.18.30")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")

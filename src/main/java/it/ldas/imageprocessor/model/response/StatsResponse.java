@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class StatsResponse {
     private Integer totalImages;
-    private BigDecimal totalSize;
-    private BigDecimal totalPixels;
+    private Long totalSize;
+    private Long totalPixels;
     private Integer receivedImages;
     private Integer processingImages;
     private Integer processedImages;

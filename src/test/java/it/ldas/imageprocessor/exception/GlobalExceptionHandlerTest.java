@@ -21,11 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ContextConfiguration(classes = {GlobalExceptionHandler.class})
 @ExtendWith(SpringExtension.class)
 class GlobalExceptionHandlerTest {
+
     @Autowired
     private GlobalExceptionHandler globalExceptionHandler;
 
     @Test
-    @DisplayName("Test handleAllExceptions(Exception, HttpServletRequest)")
     void testHandleAllExceptions() {
         // Arrange
         Exception ex = new Exception("Test exception message");
@@ -47,13 +47,8 @@ class GlobalExceptionHandlerTest {
         assertNotNull(body.get("timestamp"));
     }
 
-    /**
-     * Test {@link GlobalExceptionHandler#handleBadRequest(ResponseStatusException, HttpServletRequest)}.
-     * <p>
-     * Method under test: {@link GlobalExceptionHandler#handleBadRequest(ResponseStatusException, HttpServletRequest)}
-     */
+
     @Test
-    @DisplayName("Test handleBadRequest(ResponseStatusException, HttpServletRequest)")
     void testHandleBadRequest() {
         // Arrange
         ResponseStatusException ex = new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request data");

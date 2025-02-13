@@ -32,10 +32,10 @@ paths:
                   properties:
                     id:
                       type: long
-                      description: ID del file salvato nel database
+                      description: id del file salvato nel db
                     nome:
                       type: string
-                      description: Nome originale del file
+                      description: nome originale del file
                     url:
                       type: string
-                      description: URL pubblico del file salvato
+                      description: percorso directory del file salvato

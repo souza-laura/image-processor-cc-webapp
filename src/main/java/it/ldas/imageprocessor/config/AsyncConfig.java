@@ -12,8 +12,6 @@ import java.util.concurrent.Executor;
 @Configuration
 public class AsyncConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(AsyncConfig.class);
-
     @Value("${image.processing.max-concurrent-tasks}")
     private int maxConcurrentTasks;
 
@@ -22,7 +20,7 @@ public class AsyncConfig {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(maxConcurrentTasks); // max elab parallele
         executor.setMaxPoolSize(maxConcurrentTasks);  // max thread
-        executor.setQueueCapacity(10);               // capacità codA
+        executor.setQueueCapacity(10);               // capacità coda
         executor.initialize();
         return executor;
     }

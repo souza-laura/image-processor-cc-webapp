@@ -49,16 +49,20 @@ public class ImageProcessorService {
 
             image = imageRepository.save(image);
 
+            logger.debug("Image data saved on the db");
             // save in dir
             String filePath = System.getProperty("user.dir") + "/uploaded_images/" + image.getId() + "_" + toUpload.getOriginalFilename();
             try {
                 toUpload.transferTo(new java.io.File(filePath));
                 image.setDirectory(filePath);
                 imageRepository.save(image);
+                logger.info("Image correctly saved in directory");
             } catch (IOException e) {
+                logger.error("Errors occurred while saving image in directory");
                 throw new RuntimeException("Failed to save image in directory", e);
             }
 
+            logger.debug("Starting to process image");
             asyncService.processImage(image.getId(), image.getDirectory());
             responseList.add(new ImageUploadResponse(image.getId(), image.getOriginalName(), image.getDirectory()));
         }

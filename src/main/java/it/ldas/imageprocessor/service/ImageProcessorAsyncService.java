@@ -70,7 +70,7 @@ public class ImageProcessorAsyncService {
     }
 
 
-    private String getMetadataImageMagick(String filePath) {
+    String getMetadataImageMagick(String filePath) {
         try {
             // comando imagemagick per tutti i metadata
             ProcessBuilder processBuilder = new ProcessBuilder("identify", "-verbose", filePath);
@@ -88,7 +88,7 @@ public class ImageProcessorAsyncService {
         }
     }
 
-    private Map<String, Long> getImageDimensions(String filePath) {
+    Map<String, Long> getImageDimensions(String filePath) {
         try {
             // comando imagemagick per larghezza e altezza
             ProcessBuilder processBuilder = new ProcessBuilder("identify", "-format", "%wx%h", filePath);
@@ -113,7 +113,8 @@ public class ImageProcessorAsyncService {
         }
     }
 
-    private void createTransformedVersions(String filePath) {
+    void createTransformedVersions(String filePath) {
+        // trasformazioni random
         try {
 
             String extension = filePath.substring(filePath.lastIndexOf("."));
@@ -126,10 +127,10 @@ public class ImageProcessorAsyncService {
             resize50Process.waitFor();
 
             // b&w
-            String grayscalePath = baseName + "_bw" + extension;
-            ProcessBuilder grayscaleBuilder = new ProcessBuilder("convert", filePath, "-colorspace", "gray", grayscalePath);
-            Process grayscaleProcess = grayscaleBuilder.start();
-            grayscaleProcess.waitFor();
+            String bwPath = baseName + "_bw" + extension;
+            ProcessBuilder bwBuilder = new ProcessBuilder("convert", filePath, "-colorspace", "gray", bwPath);
+            Process bwProcess = bwBuilder.start();
+            bwProcess.waitFor();
 
             // jpg -> png, png -> jpg
             String alternateFormatPath = baseName + (extension.equals(".jpg") ? ".png" : ".jpg");
