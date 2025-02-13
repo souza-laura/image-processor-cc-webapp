@@ -2,6 +2,8 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("jacoco")
+
 }
 
 group = "it.ldas"
@@ -35,5 +37,37 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+jacoco {
+	toolVersion = "0.8.11"
+}
+
+tasks.test {
+	useJUnitPlatform()
+	finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+	reports {
+		xml.required.set(true)
+		csv.required.set(false)
+		html.required.set(true)
+	}
+}
+
+tasks.jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = "0.80".toBigDecimal()
+			}
+		}
+	}
+}
+
+tasks.check {
+	dependsOn(tasks.jacocoTestCoverageVerification)
+}
+
 
 //it.ldas.imageprocessor
