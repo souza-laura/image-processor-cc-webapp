@@ -55,7 +55,7 @@ jobs:
       # Step 8: Verifica che Swagger UI sia accessibile
       - name: Check Swagger UI
         run: |
-          curl -s http://localhost:8080/swagger-ui.html | grep -q "Swagger UI"
+          curl -s http://localhost:8080/swagger-ui/index.html | grep -q "Swagger UI"
           if [ $? -eq 0 ]; then
             echo "Swagger UI is accessible"
           else
