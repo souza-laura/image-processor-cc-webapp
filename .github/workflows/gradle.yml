@@ -1,0 +1,91 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      # Step 1: Checkout del codice
+      - uses: actions/checkout@v4
+
+      # Step 2: Configura JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      # Step 3: Configura Gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+      # Step 4: Esegui il build e i test con Gradle
+      - name: Build and test with Gradle
+        run: ./gradlew build
+
+      # Step 5: Genera il report di coverage con JaCoCo
+      - name: Generate JaCoCo coverage report
+        run: ./gradlew jacocoTestReport
+
+      # Step 6: Avvia l'applicazione Spring Boot in background
+      - name: Run Spring Boot application
+        run: ./gradlew bootRun &
+        env:
+          SPRING_PROFILES_ACTIVE: github
+
+      # Step 7: Attendi che l'applicazione sia avviata
+      - name: Wait for application to start
+        run: sleep 30
+
+      # Step 8: Verifica che Swagger UI sia accessibile
+      - name: Check Swagger UI
+        run: |
+          curl -s http://localhost:8080/swagger-ui.html | grep -q "Swagger UI"
+          if [ $? -eq 0 ]; then
+            echo "Swagger UI is accessible"
+          else
+            echo "Swagger UI is not accessible"
+            exit 1
+          fi
+
+      # Step 9: Carica il report di coverage come artefatto
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: build/reports/jacoco/test/html/
+
+  dependency-submission:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # Step 1: Checkout del codice
+      - uses: actions/checkout@v4
+
+      # Step 2: Configura JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      # Step 3: Genera e invia il grafico delle dipendenze
+      - name: Generate and submit dependency graph
+        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
