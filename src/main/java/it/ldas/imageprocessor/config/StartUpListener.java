@@ -14,15 +14,24 @@ public class StartUpListener {
 
     private static final Logger logger = LoggerFactory.getLogger(StartUpListener.class);
 
-    @Value("${image.upload.directory}")
+    @Value("${image.upload.directory:uploaded_images}")
     private String uploadDirectory;
 
     @EventListener(ApplicationReadyEvent.class)
-    public void createUploadDirectory() {
+    public void verifyUploadDirectory() {
+
         File directory = new File(uploadDirectory);
+        logger.info("Verifica directory: {}", directory.getAbsolutePath());
+
         if (!directory.exists()) {
-            directory.mkdirs();
-            logger.info("Directory creata: {}", uploadDirectory);
+            boolean created = directory.mkdirs();
+            if (created) {
+                logger.info("Directory creata: {}", directory.getAbsolutePath());
+            } else {
+                logger.error("Impossibile creare la directory: {}", directory.getAbsolutePath());
+            }
+        } else {
+            logger.info("La directory esiste già: {}", directory.getAbsolutePath());
         }
     }
 }
