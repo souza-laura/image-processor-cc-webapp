@@ -27,19 +27,18 @@ public class Utils {
 
                 int indentLevel = line.length() - line.trim().length();
 
-                // Gestione corretta della struttura dello stack in base all'indentazione
+                // gestione corretta della struttura in base all'indentazione
                 while (stack.size() > indentLevel + 1) {
-                    stack.pop(); // Rimuove gli elementi dello stack che non corrispondono più al livello di indentazione
+                    stack.pop(); // rimuove gli elementi che non corrispondono più al livello di indentazione
                 }
 
-                // Assicurati che lo stack non sia vuoto prima di fare peek()
                 if (stack.peek() == null) {
-                    continue; // Salta la riga se non c'è una mappa nel livello attuale
+                    continue; // salta la riga se non c'è una mappa nel livello attuale
                 }
 
                 String[] parts = line.trim().split(":", 2);
                 if (parts.length < 2) {
-                    continue; // Ignora righe non valide
+                    continue; // ignora righe non valide
                 }
 
                 String key = parts[0].trim();
@@ -50,7 +49,7 @@ public class Utils {
                 if (ObjectUtils.isEmpty(value)) {
                     Map<String, Object> nestedMap = new LinkedHashMap<>();
                     stack.peek().put(key, nestedMap);
-                    stack.push(nestedMap); // Aggiungi la nuova mappa allo stack per livelli successivi
+                    stack.push(nestedMap); // nuova mappa per livelli successivi
                 }
             }
         }
